@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="text-center text-xs text-gray-400">
             <Link
                 target="_blank"
-                href="https://azhubaby.com"
+                href="https://github.com/xabcs"
                 aria-label="developer"
                 className="text-slate-600">
                 开发者
@@ -17,7 +17,7 @@ export default function Footer() {
             {" "}| {" "}
             <Link
                 target="_blank"
-                href="https://hong.azhubaby.com/privacy"
+                href="https://xabcs.xabc.fun"
                 aria-label="Privacy"
                 className="text-slate-600">
                 Privacy
@@ -25,13 +25,13 @@ export default function Footer() {
             {" "}| {" "}
             <Link
                 target="_blank"
-                href="https://hong.azhubaby.com/terms"
+                href="https://xabcs.xabc.fun"
                 aria-label="Terms of Service"
                 className="text-slate-600">
                 terms
             </Link>
             <p className="mt-4 text-sm text-slate-500 sm:mt-2">
-                Copyright © hong.azhubaby.com rights reserved.
+                Copyright © xabcs.xabc.fun rights reserved.
             </p>
         </div>
     );

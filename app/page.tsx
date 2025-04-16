@@ -16,7 +16,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 const examples = [
-  "你回家太晚，女朋友很生气",
+  "发现你和前任的聊天记录",
   "你炒股亏了20万，被对象发现了",
   "女朋友吃胖了，你想和她一起减肥ᕙ(`▿´)ᕗ，然后就生气了",
   "你在厕所拉屎，女朋友也在闹肚子，但只有一个马桶，最后女朋友拉在裤兜子里了，她很生气",
@@ -26,6 +26,7 @@ export default function Chat() {
   const [forgivenessValue, setForgivenessValue] = useState(20);
   const [gameOver, setGameOver] = useState(false);
   const [previousInputs, setPreviousInputs] = useState<Set<string>>(new Set()); // 记录之前的输入
+  const [isGeneratingAIScenario, setIsGeneratingAIScenario] = useState(false); // 新增
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -83,13 +84,34 @@ export default function Chat() {
     return `${roles[Math.floor(Math.random() * roles.length)]}${problems[Math.floor(Math.random() * problems.length)]}，${reactions[Math.floor(Math.random() * reactions.length)]}`;
   }
 
+  // 新增AI生成场景函数
+  async function generateAIScenario() {
+    setIsGeneratingAIScenario(true);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'scenario' })
+      });
+      if (!response.ok) throw new Error('AI场景生成失败');
+      const data = await response.json();
+      setInput(data.scenario);
+      inputRef.current?.focus();
+    } catch (e) {
+      // 失败时回退本地
+      setInput(generateRandomScenario());
+    } finally {
+      setIsGeneratingAIScenario(false);
+    }
+  }
+
   return (
     <main className="flex flex-col items-center justify-between pb-40 bg-gray-50">
       {/* 顶部导航栏 */}
       <div className="fixed top-0 w-full bg-white shadow-sm z-50">
         <div className="container mx-auto flex justify-between items-center px-4 py-3 max-w-screen-md">
           <a href="https://test.test.com" target="_blank" className="hover:opacity-80 transition-opacity">
-            <Image src="/logo.png" alt="logo" width={36} height={36} />
+            <Image src="/logo.jpg" alt="logo" width={36} height={36} />
           </a>
           <a href="https://github.com/johanazhu/honghongai" target="_blank" className="text-gray-600 hover:text-gray-900">
             <GithubIcon />
@@ -103,9 +125,9 @@ export default function Chat() {
               className="absolute h-full bg-gradient-to-r from-green-400 to-green-500 transition-all duration-500 ease-out"
               style={{ width: `${forgivenessValue}%` }}
             >
-              <div className="absolute right-0 -top-8 transform -translate-y-full">
+              <div className="absolute right-0 -top-4 transform -translate-y-full">
                 <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-md">
-                  {forgivenessValue}%
+                  原凉值 {forgivenessValue}%
                 </div>
                 <div className="w-2 h-2 bg-green-500 transform rotate-45 translate-x-1/2 translate-y-[-4px]"></div>
               </div>
@@ -127,7 +149,7 @@ export default function Chat() {
             >
               {message.role === "assistant" && (
                 <div className="flex-shrink-0">
-                  <Image src="/logo.png" alt="logo" width={36} height={36} className="rounded-full" />
+                  <Image src="/logo.jpg" alt="logo" width={36} height={36} className="rounded-full" />
                 </div>
               )}
               <div
@@ -153,45 +175,61 @@ export default function Chat() {
       ) : (
         <div className="w-full max-w-screen-md mt-20 bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="bg-gray-50 p-6 border-t">
-            <Image
-              src="/logo.png"
-              alt="哄哄模拟器logo"
-              width={80}
-              height={80}
-              className="mb-4"
-            />
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">HongHong</h1>
+            <div className="flex justify-center"> {/* 新增居中容器 */}
+              <Image
+                src="/love.jpg"
+                alt="哄哄模拟器logo"
+                width={320}
+                height={180}
+                className="mb-4"
+              />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">哄哄</h1>
             <div className="text-gray-500">
-              哄哄模拟器基于AI技术，你需要使用语言技巧和沟通能力，在限定次数内让对方原谅你，这并不容易，基于 DeepSeek AI + Next.js + Vercel 构建.
+            AI 赋能的道歉挑战！你的对象生气了，你需要运用语言技巧和沟通能力，在限定次数内获得她的原谅。这绝非易事，但充满乐趣！基于 DeepSeekAI Next.js Vercel 构建，快来体验吧！
             </div>
           </div>
           <div className="bg-gray-50 p-6 border-t">
-            <p className="mb-4">👇 选择一个场景，然后开始模拟哄你的虚拟男/女朋友吧</p>
-            <div className="space-y-2">
-              <select
-                onChange={(e) => {
-                  setInput(e.target.value);
-                  inputRef.current?.focus();
-                }}
-                className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500 leading-relaxed h-[52px]"
-              >
-                <option value="">请选择预设场景...</option>
-                {examples.map((example, i) => (
-                  <option key={i} value={example} className="flex items-center">
-                    {example.length > 25 ? example.slice(0,25)+"..." : example}
-                  </option>
-                ))}
-              </select>
+            <p className="mb-4 text-gray-600 font-medium">👇 选择一个场景，开始模拟哄你的虚拟男/女朋友</p>
+            <div className="space-y-3">
+              <div className="relative">
+                <select
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    inputRef.current?.focus();
+                  }}
+                  className="w-full px-4 py-3 text-gray-700 text-sm font-medium leading-relaxed tracking-normal font-sans border-2 border-gray-200 rounded-xl bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all duration-200 appearance-none h-[52px]"
+                >
+                  <option value="" className="text-gray-400">选择预设场景</option>
+                  {examples.map((example, i) => (
+                    <option key={i} value={example} className="py-2">
+                      {example}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
               <button
-                onClick={() => {
-                  const randomScenario = generateRandomScenario();
-                  setInput(randomScenario);
-                  inputRef.current?.focus();
-                }}
-                className="w-full px-4 py-3 text-base bg-white border border-gray-300 rounded-lg hover:bg-gray-50 flex justify-between items-center leading-relaxed h-[52px]"
+                onClick={generateAIScenario}
+                disabled={isGeneratingAIScenario}
+                className="w-full px-4 py-3 text-sm font-medium leading-relaxed tracking-normal font-sans bg-white border-2 border-gray-200 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all duration-200 flex justify-between items-center group h-[52px]"
               >
-                <span className="text-gray-800">随机生成场景</span>
-                <span className="text-green-600 text-xl font-bold ml-2">→</span>
+                <span className="text-gray-700 font-medium leading-relaxed tracking-normal font-sans">Ai随机生成场景</span>
+                {isGeneratingAIScenario ? (
+                  <div className="w-5 h-5 text-purple-500">
+                    <LoadingCircle />
+                  </div>
+                ) : (
+                  <span className="text-purple-500 text-xl font-bold ml-2 transition-transform group-hover:translate-x-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                  </svg>
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -250,16 +288,20 @@ export default function Chat() {
       {gameOver && (
         <div className="fixed inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center">
           <div className="text-center max-w-md">
-            <Image src="/logo.png" alt="logo" width={80} height={80} className="mx-auto mb-4" />
+            <Image src="/logo.jpg" alt="logo" width={80} height={80} className="mx-auto mb-4" />
             {forgivenessValue >= 100 ? (
               <>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">恭喜！</h1>
-                <p className="text-gray-600 mb-6">你成功哄好了女朋友！</p>
+                <p className="text-green-600 mb-6 text-2xl font-extrabold flex items-center justify-center animate-bounce mt-8">
+                  你成功哄好了伴侣！<span className="ml-2">💖🥳</span>
+                </p>
               </>
             ) : (
               <>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">游戏结束</h1>
-                <p className="text-gray-600 mb-6">女朋友生气离开了...</p>
+                <p className="text-red-600 mb-6 text-2xl font-extrabold flex items-center justify-center animate-bounce mt-8">
+                  你被甩了！<span className="ml-2">💔😭</span>
+                </p>
               </>
             )}
             <button
