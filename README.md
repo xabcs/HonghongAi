@@ -32,11 +32,6 @@ Here's how you can contribute:
 - [Open an issue](https://github.com/xabcs/HonghongAi/issues) if you believe you've encountered a bug.
 - Make a [pull request](https://github.com/xabcs/HonghongAi/pull) to add new features/make quality-of-life improvements/fix bugs.
 
-## Buy me a coffee
-
-If this repo is helpful to you, buy me a coffee,thank you very much!😄
-
-<img src="https://s2.loli.net/2022/10/09/31kvp8HRJuoBCfc.jpg" height="300px" width="300px" />
 
 ## License
 
