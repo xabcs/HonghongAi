@@ -11,9 +11,9 @@ HongHongChat 基于以下技术栈构建：
 
 ## 项目截图
 
-![项目截图](public/hong_chat.png)
-![项目截图](public/hong_home.png)
-
+![项目截图](https://jsd.cdn.zzko.cn/gh/xabcs/picx-images-hosting@master/20250416/hong_over.1hselcc4wv.webp)
+![项目截图](https://jsd.cdn.zzko.cn/gh/xabcs/picx-images-hosting@master/20250416/hong_chat.51ecb5eqvt.webp)
+![项目截图](https://jsd.cdn.zzko.cn/gh/xabcs/picx-images-hosting@master/20250416/hong_home.491gtf6gvv.webp)
 ## 环境变量
 
 你可以通过环境变量控制网站的行为。
