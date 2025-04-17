@@ -131,7 +131,7 @@ export default function Chat() {
       {/* 顶部导航栏 */}
       <div className="fixed top-0 w-full bg-white shadow-sm z-50">
         <div className="container mx-auto flex justify-between items-center px-4 py-3 max-w-screen-md">
-          <a href="https://test.test.com" target="_blank" className="hover:opacity-80 transition-opacity">
+          <a href="https://hong.xabc.fun/" target="_blank" className="hover:opacity-80 transition-opacity">
             <Image src="/logo.jpg" alt="logo" width={36} height={36} />
           </a>
           <a href="https://github.com/johanazhu/honghongai" target="_blank" className="text-gray-600 hover:text-gray-900">
