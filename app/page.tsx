@@ -134,7 +134,7 @@ export default function Chat() {
           <a href="https://hong.xabc.fun/" target="_blank" className="hover:opacity-80 transition-opacity">
             <Image src="/logo.jpg" alt="logo" width={36} height={36} />
           </a>
-          <a href="https://github.com/johanazhu/honghongai" target="_blank" className="text-gray-600 hover:text-gray-900">
+          <a href="https://github.com/xabcs/HonghongAi" target="_blank" className="text-gray-600 hover:text-gray-900">
             <GithubIcon />
           </a>
         </div>
