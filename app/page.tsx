@@ -211,6 +211,18 @@ export default function Chat() {
             </div>
           ))}
 
+          {/* 聊天终止提示 - 在游戏结束时且原谅值为0时显示 */}
+          {gameOver && forgivenessValue <= 0 && (
+            <div className="w-full flex justify-center my-4">
+              <div className="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                对方已将你拉黑，无法继续对话
+              </div>
+            </div>
+          )}
+
           {/* 游戏结束消息 */}
           {gameOver && (
             <div className="w-full max-w-md mx-auto mt-8 mb-4">
@@ -234,6 +246,17 @@ export default function Chat() {
                   <>
                     <h2 className="text-2xl font-bold text-red-600 mb-2">游戏结束</h2>
                     <p className="text-red-600 mb-4">你被甩了！💔😭</p>
+                    <button
+                      onClick={() => {
+                        // 只重置游戏状态，保留消息记录，给予挽回机会
+                        setGameOver(false);
+                        // 设置一个较低但有机会的原谅值
+                        setForgivenessValue(5);
+                      }}
+                      className="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors mr-2"
+                    >
+                      尝试挽回
+                    </button>
                   </>
                 )}
                 <button
@@ -330,7 +353,7 @@ export default function Chat() {
               required
               rows={1}
               autoFocus
-              placeholder="Send a message"
+              placeholder={gameOver && forgivenessValue <= 0 ? "对方已将你拉黑，无法发送消息" : "Send a message"}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -340,13 +363,14 @@ export default function Chat() {
                 }
               }}
               spellCheck={false}
-              className="w-full bg-transparent pr-12 focus:outline-none border-none focus:ring-0 resize-none py-3 px-4"
+              className={`w-full bg-transparent pr-12 focus:outline-none border-none focus:ring-0 resize-none py-3 px-4 ${gameOver && forgivenessValue <= 0 ? "text-gray-400" : ""}`}
+              disabled={gameOver && forgivenessValue <= 0}
             />
             <button
-              disabled={disabled}
+              disabled={disabled || (gameOver && forgivenessValue <= 0)}
               className={clsx(
                 "absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg transition-all",
-                disabled
+                disabled || (gameOver && forgivenessValue <= 0)
                   ? "text-gray-400 cursor-not-allowed"
                   : "text-white bg-green-500 hover:bg-green-600 shadow-md"
               )}
