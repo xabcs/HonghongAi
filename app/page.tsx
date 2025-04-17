@@ -25,6 +25,7 @@ const examples = [
 export default function Chat() {
   const [forgivenessValue, setForgivenessValue] = useState(20);
   const [gameOver, setGameOver] = useState(false);
+  const [warningMessage, setWarningMessage] = useState<string | null>(null);
   const [previousInputs, setPreviousInputs] = useState<Set<string>>(new Set()); // 记录之前的输入
   const [isGeneratingAIScenario, setIsGeneratingAIScenario] = useState(false); // 新增
   const formRef = useRef<HTMLFormElement>(null);
@@ -52,6 +53,15 @@ export default function Chat() {
           // 确保原谅值在合理范围内
           const normalizedForgiveness = Math.max(0, Math.min(100, currentForgiveness));
           setForgivenessValue(normalizedForgiveness);
+          
+          // 添加警告信息
+          if (normalizedForgiveness <= 10 && normalizedForgiveness > 0) {
+            setWarningMessage('警告：原谅值很低了，再不认真哄就要被甩了！');
+          } else if (normalizedForgiveness <= 20 && normalizedForgiveness > 10) {
+            setWarningMessage('注意：原谅值有点低，要小心说话哦！');
+          } else {
+            setWarningMessage(null);
+          }
           
           // 游戏结束条件：原谅值达到100或小于等于0
           if (normalizedForgiveness >= 100 || normalizedForgiveness <= 0) {
@@ -146,6 +156,13 @@ export default function Chat() {
           </div>
         )}
       </div>
+
+      {/* 添加警告消息显示 */}
+      {warningMessage && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative z-50 animate-bounce">
+          <span className="block sm:inline">{warningMessage}</span>
+        </div>
+      )}
 
       {/* 消息列表 */}
       {messages.length > 0 ? (
