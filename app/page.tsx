@@ -93,11 +93,19 @@ export default function Chat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'scenario' })
       });
-      if (!response.ok) throw new Error('AI场景生成失败');
+      
+      if (!response.ok) {
+        if (response.status === 405) {
+          throw new Error('API endpoint not properly configured. Please check the server setup.');
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
       setInput(data.scenario);
       inputRef.current?.focus();
     } catch (e) {
+      console.error('Error generating AI scenario:', e);
       // 失败时回退本地
       setInput(generateRandomScenario());
     } finally {
