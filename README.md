@@ -9,6 +9,8 @@ HongHongChat 基于以下技术栈构建：
 - [Vercel](https://vercel.com) – 部署
 - [TailwindCSS](https://tailwindcss.com/) – 样式
 
+在线试玩：[https://hong.xabc.fun/](https://hong.xabc.fun/)
+
 ## 项目截图
 
 ![项目截图](https://jsd.cdn.zzko.cn/gh/xabcs/picx-images-hosting@master/20250416/hong_over.1hselcc4wv.webp)
