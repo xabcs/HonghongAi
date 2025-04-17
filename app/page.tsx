@@ -49,9 +49,12 @@ export default function Chat() {
         const forgivenessMatch = result.match(/原谅值：(\d+)\/100/);
         if (forgivenessMatch) {
           const currentForgiveness = parseInt(forgivenessMatch[1]);
-          setForgivenessValue(currentForgiveness);
+          // 确保原谅值在合理范围内
+          const normalizedForgiveness = Math.max(0, Math.min(100, currentForgiveness));
+          setForgivenessValue(normalizedForgiveness);
           
-          if (currentForgiveness >= 100 || currentForgiveness === 0) {
+          // 游戏结束条件：原谅值达到100或小于等于0
+          if (normalizedForgiveness >= 100 || normalizedForgiveness <= 0) {
             setGameOver(true);
           }
         }
