@@ -5,9 +5,9 @@ import { GoogleAnalytics, UmamiAnalytics } from '@/components/Analytics'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: "我是哄哄模拟器的开源版，基于 Gemini AI + Next.js + Vercel 构建",
+  title: "Honghong",
   description:
-    "这是哄哄模拟器的开源版，基于 Gemini AI + Next.js + Vercel 构建"
+    "一个道歉模拟器"
 }
 
 export default function RootLayout({

@@ -20,7 +20,7 @@ HongHongChat 基于以下技术栈构建：
 
 | 名称                | 说明                                                                 | 是否必填 |
 | ------------------- | -------------------------------------------------------------------- | -------- |
-| `DEEPSEEK_API_KEY`  | 你的 GEMINI API Key。可在 [这里](https://makersuite.google.com/app/apikey) 获取。 | **✔**    |
+| `DEEPSEEK_API_KEY`  | 你的 GEMINI API Key。可在 [这里](https://platform.deepseek.com/api_keys) 获取。 | **✔**    |
 
 ## 贡献指南
 
