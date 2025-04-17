@@ -210,6 +210,47 @@ export default function Chat() {
               )}
             </div>
           ))}
+
+          {/* 游戏结束消息 */}
+          {gameOver && (
+            <div className="w-full max-w-md mx-auto mt-8 mb-4">
+              <div className={clsx(
+                "bg-white rounded-xl shadow-lg p-6 text-center",
+                forgivenessValue >= 100 ? "border-2 border-green-500" : "border-2 border-red-500"
+              )}>
+                <Image 
+                  src="/logo.jpg" 
+                  alt="logo" 
+                  width={60} 
+                  height={60} 
+                  className="mx-auto mb-4 rounded-full"
+                />
+                {forgivenessValue >= 100 ? (
+                  <>
+                    <h2 className="text-2xl font-bold text-green-600 mb-2">恭喜！</h2>
+                    <p className="text-green-600 mb-4">你成功哄好了伴侣！💖🥳</p>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-2xl font-bold text-red-600 mb-2">游戏结束</h2>
+                    <p className="text-red-600 mb-4">你被甩了！💔😭</p>
+                  </>
+                )}
+                <button
+                  onClick={() => {
+                    setGameOver(false);
+                    setForgivenessValue(20);
+                    setInput('');
+                    setMessages([]);
+                    window.history.pushState({}, '', '/');
+                  }}
+                  className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  重新开始
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="w-full max-w-screen-md mt-20 bg-white rounded-xl shadow-sm overflow-hidden">
@@ -324,41 +365,6 @@ export default function Chat() {
           </div>
         </div>
       </div>
-      {gameOver && (
-        <div className="fixed inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center">
-          <div className="text-center max-w-md">
-            <Image src="/logo.jpg" alt="logo" width={80} height={80} className="mx-auto mb-4" />
-            {forgivenessValue >= 100 ? (
-              <>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">恭喜！</h1>
-                <p className="text-green-600 mb-6 text-2xl font-extrabold flex items-center justify-center animate-bounce mt-8">
-                  你成功哄好了伴侣！<span className="ml-2">💖🥳</span>
-                </p>
-              </>
-            ) : (
-              <>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">游戏结束</h1>
-                <p className="text-red-600 mb-6 text-2xl font-extrabold flex items-center justify-center animate-bounce mt-8">
-                  你被甩了！<span className="ml-2">💔😭</span>
-                </p>
-              </>
-            )}
-            <button
-              onClick={() => {
-                setGameOver(false);
-                setForgivenessValue(20);
-                setInput('');
-                // 新增重置消息列表和路由跳转
-                messages.length > 0 && setMessages([]);
-                window.history.pushState({}, '', '/');
-              }}
-              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-            >
-              重新开始
-            </button>
-          </div>
-        </div>
-      )}
     </main>
   );
 }
